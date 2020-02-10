@@ -1,0 +1,255 @@
+import turtle
+import math
+import random
+
+#Base game settings
+turtle.fd(0)
+turtle.speed(0)
+turtle.bgcolor("white")
+turtle.ht()
+turtle.setundobuffer(1)
+turtle.tracer(1)
+turtle.setup(900,900)
+
+#Class to set up all sprites used in the game
+class Sprite(turtle.Turtle):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        turtle.Turtle.__init__(self, shape = spriteshape)
+        self.speed(0)
+        self.penup()
+        self.color(color)
+        self.fd(0)
+        self.goto(startx, starty)
+        self.setheading(heading)
+        self.speed = 1
+
+    def move(self):
+        self.fd(self.speed)
+
+#Collision detection (Wall, Boundry, Boundries, Divider, Collision)
+        #Main Wall
+        if self.xcor() > 290:
+            self.setx(290)
+            self.rt(60)
+        if self.xcor() < -290:
+            self.setx(-290)
+            self.rt(60)
+        if self.ycor() > 290:
+            self.sety(290)
+            self.rt(60)
+        if self.ycor() < -290:
+            self.sety(-290)
+            self.rt(60)
+
+        #Tank colliding with target
+    def collide(self, other):
+        if (self.xcor() >= (other.xcor() - 10)) and \
+            (self.xcor() <= (other.xcor() + 10)) and \
+            (self.ycor() <= (other.ycor() + 10)) and \
+            (self.ycor() >= (other.ycor() - 10)):
+            return True
+        else:
+            return False
+
+ 
+
+#Tank class and controls (Turning, Controls, Bluetank, Setup)
+#Bluetank class and setup
+class Bluetank(Sprite):
+     def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+
+        self.speed = 0
+
+    #Aim at the Red target
+     def blueaim1(self):
+         self.setheading(self.towards(redtarget))
+         print("Angle towards Red target is ", self.heading()," degrees")
+         #find the distance in the X direction
+         XRed = (redtarget.xcor() - bluetank.xcor())
+         #take the absolute value
+         XRed1 = math.fabs(XRed)
+         #find the distance in the Y 
+         YRed = (redtarget.ycor() - bluetank.ycor())
+         #take the absolute value
+         YRed1 = math.fabs(YRed)
+         #equate the distance
+         RedDistance = ((math.sqrt((XRed1+YRed1)**2)))
+         print("Distance to Red target is ", RedDistance, " pixels")  
+         
+     #Aim at the Green target
+     def blueaim2(self):
+         self.setheading(self.towards(greentarget))
+         print("Angle towards Green target is ", self.heading()," degrees")
+         XGreen = (greentarget.xcor() - bluetank.xcor())
+         XGreen1 = math.fabs(XGreen)
+         YGreen = (greentarget.ycor() - bluetank.ycor())
+         YGreen1 = math.fabs(YGreen)
+         GreenDistance = ((math.sqrt((XGreen1+YGreen1)**2)))
+         print("Distance to Green target is ", GreenDistance, " pixels")
+
+     #Aim at the Pink target
+     def blueaim3(self):
+         self.setheading(self.towards(pinktarget))
+         print("Angle towards Pink target is ", self.heading()," degrees")
+         XPink = (pinktarget.xcor() - bluetank.xcor())
+         XPink1 = math.fabs(XPink)
+         YPink = (pinktarget.ycor() - bluetank.ycor())
+         YPink1 = math.fabs(YPink)
+         PinkDistance = ((math.sqrt((XPink1+YPink1)**2)))
+         print("Distance to Pink target is ", PinkDistance, " pixels")
+
+     #Aim at the Orange target
+     def blueaim4(self):
+         self.setheading(self.towards(orangetarget))
+         print("Angle towards Orange target is ", self.heading()," degrees")
+         XOrange = (orangetarget.xcor() - bluetank.xcor())
+         XOrange1 = math.fabs(XOrange)
+         YOrange = (orangetarget.ycor() - bluetank.ycor())
+         YOrange1 = math.fabs(YOrange)
+         OrangeDistance = ((math.sqrt((XOrange1+YOrange1)**2)))
+         print("Distance to Orange target is ", OrangeDistance, " pixels")
+
+     def blueaimclosest(self):
+         XOrange = (orangetarget.xcor() - bluetank.xcor())
+         XOrange1 = math.fabs(XOrange)
+         YOrange = (orangetarget.ycor() - bluetank.ycor())
+         YOrange1 = math.fabs(YOrange)
+         OrangeDistance = ((math.sqrt((XOrange1+YOrange1)**2)))
+
+         XPink = (pinktarget.xcor() - bluetank.xcor())
+         XPink1 = math.fabs(XPink)
+         YPink = (pinktarget.ycor() - bluetank.ycor())
+         YPink1 = math.fabs(YPink)
+         PinkDistance = ((math.sqrt((XPink1+YPink1)**2)))
+
+         XGreen = (greentarget.xcor() - bluetank.xcor())
+         XGreen1 = math.fabs(XGreen)
+         YGreen = (greentarget.ycor() - bluetank.ycor())
+         YGreen1 = math.fabs(YGreen)
+         GreenDistance = ((math.sqrt((XGreen1+YGreen1)**2)))
+
+         XRed = (redtarget.xcor() - bluetank.xcor())
+         XRed1 = math.fabs(XRed)
+         YRed = (redtarget.ycor() - bluetank.ycor())
+         YRed1 = math.fabs(YRed)
+         RedDistance = ((math.sqrt((XRed1+YRed1)**2)))
+
+         
+         if OrangeDistance < PinkDistance and GreenDistance and RedDistance:
+             print("Orange is closest")
+             self.setheading(self.towards(orangetarget))
+ 
+         if PinkDistance < OrangeDistance and GreenDistance and RedDistance:
+             print("Pink is closest")
+             self.setheading(self.towards(pinktarget))
+
+         if GreenDistance < PinkDistance and OrangeDistance and RedDistance:
+             print("Green is closest")
+             self.setheading(self.towards(greentarget))
+
+         if RedDistance < PinkDistance and GreenDistance and OrangeDistance:
+             print("Red is closest")
+             self.setheading(self.towards(redtarget))
+
+
+#Target setups
+class Redtarget(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 0
+
+class Greentarget(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 0
+
+
+class Pinktarget(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 0
+
+class Orangetarget(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 0
+
+#Class for graphics (draw boarder, draw wall)
+class Game():
+    def __init__(self):
+        self.state = "playing"
+        self.pen = turtle.Turtle()
+        self.pen.hideturtle()
+
+    def draw_boarder(self):
+        self.pen.speed(0)
+        self.pen.color("black")
+        self.pen.pensize(3)
+        self.pen.penup()
+        self.pen.goto(-300,300)
+        self.pen.pendown()
+
+        #Main Wall
+        for side in range(4):
+            self.pen.fd(600)
+            self.pen.rt(90)
+        self.pen.penup()
+        self.pen.ht()
+
+   
+#Make classes into objects
+game = Game()
+#draw the boarder
+game.draw_boarder()
+
+#Create all Sprites
+#Sprites
+bluetank = Bluetank("classic", "blue" ,0, 0, 180)
+
+redStartX = random.randint(-290,290)
+redStartY = random.randint(-290,290)
+redtarget = Redtarget("circle", "red", redStartX, redStartY, 0)
+
+greenStartX = random.randint(-290,290)
+greenStartY = random.randint(-290,290)
+greentarget = Greentarget("circle", "green",greenStartX, greenStartY, 0)
+
+pinkStartX = random.randint(-290,290)
+pinkStartY = random.randint(-290,290)
+pinktarget = Pinktarget("circle", "pink", pinkStartX, pinkStartY, 0)
+
+orangeStartX = random.randint(-290,290)
+orangeStartY = random.randint(-290,290)
+orangetarget = Orangetarget("circle", "orange", orangeStartX, orangeStartX, 0)
+
+def moveTargets():
+         redx = random.randint(-290,290)
+         redy = random.randint(-290,290)
+         redtarget.goto(redx,redy)
+
+         greenx = random.randint(-290,290)
+         greeny = random.randint(-290,290)
+         greentarget.goto(greenx,greeny)
+
+         pinkx = random.randint(-290,290)
+         pinky = random.randint(-290,290)
+         pinktarget.goto(pinkx,pinky)
+
+         orangex = random.randint(-290,290)
+         orangey = random.randint(-290,290)
+         orangetarget.goto(orangex,orangey)
+
+
+#Controls
+#Bluetank
+turtle.onkey(bluetank.blueaim1, '1')
+turtle.onkey(bluetank.blueaim2, '2')
+turtle.onkey(bluetank.blueaim3, '3')
+turtle.onkey(bluetank.blueaim4, '4')
+turtle.onkey(bluetank.blueaimclosest, '5')
+turtle.onkey(moveTargets, '6')
+turtle.listen()
+
+#Main game loop
+turtle.done()
