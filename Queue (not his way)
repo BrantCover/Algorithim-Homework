@@ -1,0 +1,22 @@
+class queue():
+    def __init__(self):
+        self.Q = [0,0,0,0,0,0,0]
+        head = 1
+        tail = 9
+
+    def Qempty(self):
+        return self.Q ==[]
+
+    def enqueue(self,x):
+        self.Q.insert(0,x)
+
+    def dequeue(Q):
+        return self.Q.pop()
+
+    def getnumberqueued(self):
+        return len(self.Q)
+
+q = queue()
+
+q.enqueue(3)
+print(q.getnumberqueued())
