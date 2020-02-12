@@ -20,3 +20,47 @@ q = queue()
 
 q.enqueue(3)
 print(q.getnumberqueued())
+
+
+or
+
+class queue():
+    def __init__(self, fullQ):
+        self.Q = list()
+        self.fullQ = fullQ
+        self.head = 0
+        self.tail = 0
+
+    def enqueue(self,x):
+        if self.queuesize() == (self.fullQ - 1):
+            print("The queue is full")
+        else:
+            self.Q.insert(0,x)
+            self.tail = (self.tail + 1) % self.fullQ
+            return True
+
+    def dequeue(self):
+        if self.size() == 0:
+            return("The queue is empty")
+        else:
+            x = self.Q[self.head]
+            self.head = (self.head + 1) % self.fullQ
+            return x
+
+    def queuesize(self):
+        if self.tail >= self.head:
+            Qsize = self.tail - self.head
+        else:
+            Qsize = self.fullQ - (self.head - self.tail)
+        return Qsize
+
+size = input("Enter the Size of the Queue - ")
+q = queue(int(size))
+print(q.enqueue(1))
+print(q.enqueue(2))
+print(q.enqueue(3))
+print(q.enqueue(4))
+print(q.dequeue)
+print(q.dequeue)
+print(q.dequeue)
+print(q.dequeue)
