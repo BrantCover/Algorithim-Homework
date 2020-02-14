@@ -1,5 +1,6 @@
 import turtle
 import math
+import random
 
 #Base game settings
 turtle.fd(0)
@@ -40,7 +41,7 @@ class Sprite(turtle.Turtle):
             self.sety(-290)
             self.rt(60)
 
-        #Tank colliding with tank
+        #Tank colliding with target
     def collide(self, other):
         if (self.xcor() >= (other.xcor() - 10)) and \
             (self.xcor() <= (other.xcor() + 10)) and \
@@ -52,7 +53,7 @@ class Sprite(turtle.Turtle):
 
  
 
-#Tank class and controls (Turning, Controls, Bluetank, Redtank, Setup)
+#Tank class and controls (Turning, Controls, Bluetank, Setup)
 #Bluetank class and setup
 class Bluetank(Sprite):
      def __init__(self, spriteshape, color, startx, starty, heading):
@@ -60,102 +61,85 @@ class Bluetank(Sprite):
 
         self.speed = 0
 
-     def turnblue_left(self):
-        self.lt(30)
-
-     def turnblue_right(self):
-        self.rt(30)
-
-     def bluespeed(self):
-         self.speed += 1
-
-     def blueslow(self):
-         self.speed -= 1
-
-     def bluereset(self):
-         self.goto(200,200)
-
-    #Aim at the Red Tank
+    #Aim at the Red target
      def blueaim1(self):
-         self.setheading(self.towards(redtank))
-         print("Angle towards Red tank is ", self.heading()," degrees")
+         self.setheading(self.towards(redtarget))
+         global RedDistance
+         print("Angle towards Red target is ", self.heading()," degrees")
          #find the distance in the X direction
-         XRed = (redtank.xcor() - bluetank.xcor())
+         XRed = (redtarget.xcor() - bluetank.xcor())
          #take the absolute value
          XRed1 = math.fabs(XRed)
          #find the distance in the Y 
-         YRed = (redtank.ycor() - bluetank.ycor())
+         YRed = (redtarget.ycor() - bluetank.ycor())
          #take the absolute value
          YRed1 = math.fabs(YRed)
          #equate the distance
          RedDistance = ((math.sqrt((XRed1+YRed1)**2)))
-         print("Distance to Red tank is ", RedDistance, " pixels")  
+         print("Distance to Red target is ", RedDistance, " pixels")
+         print(" ")
          
-     #Aim at the Green Tank
+         
+     #Aim at the Green target
      def blueaim2(self):
-         self.setheading(self.towards(greentank))
-         print("Angle towards Green tank is ", self.heading()," degrees")
-         XGreen = (greentank.xcor() - bluetank.xcor())
+         self.setheading(self.towards(greentarget))
+         global GreenDistance
+         print("Angle towards Green target is ", self.heading()," degrees")
+         XGreen = (greentarget.xcor() - bluetank.xcor())
          XGreen1 = math.fabs(XGreen)
-         YGreen = (greentank.ycor() - bluetank.ycor())
+         YGreen = (greentarget.ycor() - bluetank.ycor())
          YGreen1 = math.fabs(YGreen)
          GreenDistance = ((math.sqrt((XGreen1+YGreen1)**2)))
-         print("Distance to Green tank is ", GreenDistance, " pixels")
+         print("Distance to Green target is ", GreenDistance, " pixels")
+         print(" ")
 
-     #Aim at the Pink Tank
+     #Aim at the Pink target
      def blueaim3(self):
-         self.setheading(self.towards(pinktank))
-         print("Angle towards Pink tank is ", self.heading()," degrees")
-         XPink = (pinktank.xcor() - bluetank.xcor())
+         self.setheading(self.towards(pinktarget))
+         global PinkDistance
+         print("Angle towards Pink target is ", self.heading()," degrees")
+         XPink = (pinktarget.xcor() - bluetank.xcor())
          XPink1 = math.fabs(XPink)
-         YPink = (pinktank.ycor() - bluetank.ycor())
+         YPink = (pinktarget.ycor() - bluetank.ycor())
          YPink1 = math.fabs(YPink)
          PinkDistance = ((math.sqrt((XPink1+YPink1)**2)))
-         print("Distance to Pink tank is ", PinkDistance, " pixels")
+         print("Distance to Pink target is ", PinkDistance, " pixels")
+         print(" ")
 
-     #Aim at the Orange Tank
+     #Aim at the Orange target
      def blueaim4(self):
-         self.setheading(self.towards(orangetank))
-         print("Angle towards Orange tank is ", self.heading()," degrees")
-         XOrange = (orangetank.xcor() - bluetank.xcor())
+         self.setheading(self.towards(orangetarget))
+         global OrangeDistance
+         print("Angle towards Orange target is ", self.heading()," degrees")
+         XOrange = (orangetarget.xcor() - bluetank.xcor())
          XOrange1 = math.fabs(XOrange)
-         YOrange = (orangetank.ycor() - bluetank.ycor())
+         YOrange = (orangetarget.ycor() - bluetank.ycor())
          YOrange1 = math.fabs(YOrange)
          OrangeDistance = ((math.sqrt((XOrange1+YOrange1)**2)))
-         print("Distance to Orange tank is ", OrangeDistance, " pixels")
+         print("Distance to Orange target is ", OrangeDistance, " pixels")
+         print(" ")
 
-#Target tank setups
-class Redtank(Sprite):
+#Target setups
+class Redtarget(Sprite):
     def __init__(self, spriteshape, color, startx, starty, heading):
         Sprite.__init__(self, spriteshape, color, startx, starty, heading)
         self.speed = 0
 
-    def pinkreset(self):
-        self.goto(200, -200)
-
-class Greentank(Sprite):
+class Greentarget(Sprite):
     def __init__(self, spriteshape, color, startx, starty, heading):
         Sprite.__init__(self, spriteshape, color, startx, starty, heading)
         self.speed = 0
 
-    def greenreset(self):
-        self.goto(-200, -200)
 
-class Pinktank(Sprite):
+class Pinktarget(Sprite):
     def __init__(self, spriteshape, color, startx, starty, heading):
         Sprite.__init__(self, spriteshape, color, startx, starty, heading)
         self.speed = 0
 
-    def pinkreset(self):
-        self.goto(-200, 200)
-
-class Orangetank(Sprite):
+class Orangetarget(Sprite):
     def __init__(self, spriteshape, color, startx, starty, heading):
         Sprite.__init__(self, spriteshape, color, startx, starty, heading)
         self.speed = 0
-
-    def pinkreset(self):
-        self.goto(200, 200)
 
 #Class for graphics (draw boarder, draw wall)
 class Game():
@@ -179,47 +163,104 @@ class Game():
         self.pen.penup()
         self.pen.ht()
 
+   
 #Make classes into objects
 game = Game()
 #draw the boarder
 game.draw_boarder()
 
 #Create all Sprites
-#Tanks
+#Sprites
 bluetank = Bluetank("classic", "blue" ,0, 0, 180)
-redtank = Redtank("classic", "red",200, -200, 135)
-greentank = Greentank("classic", "green",-200, 200, 315)
-pinktank = Pinktank("classic", "pink", -200, -200, 45)
-orangetank = Orangetank("classic", "orange", 200, 200, 225)
+
+redStartX = random.randint(-290,290)
+redStartY = random.randint(-290,290)
+redtarget = Redtarget("circle", "red", redStartX, redStartY, 0)
+
+greenStartX = random.randint(-290,290)
+greenStartY = random.randint(-290,290)
+greentarget = Greentarget("circle", "green",greenStartX, greenStartY, 0)
+
+pinkStartX = random.randint(-290,290)
+pinkStartY = random.randint(-290,290)
+pinktarget = Pinktarget("circle", "pink", pinkStartX, pinkStartY, 0)
+
+orangeStartX = random.randint(-290,290)
+orangeStartY = random.randint(-290,290)
+orangetarget = Orangetarget("circle", "orange", orangeStartX, orangeStartX, 0)
+
+def merge_lists(left_sublist,right_sublist):
+	i,j = 0,0
+	result = []
+	while i<len(left_sublist) and j<len(right_sublist):
+		if left_sublist[i] <= right_sublist[j]:
+			result.append(left_sublist[i])
+			i += 1
+		else:
+			result.append(right_sublist[j])
+			j += 1
+	result += left_sublist[i:]
+	result += right_sublist[j:]
+	return result
+
+def merge_sort(input_list):
+	if len(input_list) <= 1:
+		return input_list
+	else:
+		middle = int(len(input_list)/2)
+		left_sublist = merge_sort(input_list[:middle])
+		right_sublist = merge_sort(input_list[middle:])
+		return merge_lists(left_sublist,right_sublist)
+
+def sortdistance():
+    bluetank.blueaim1()
+    bluetank.blueaim2()
+    bluetank.blueaim3()
+    bluetank.blueaim4()
+    targetdistances = [RedDistance,GreenDistance,PinkDistance,OrangeDistance]
+    print("The Sorted distances are ", merge_sort(targetdistances))
+    sortedtargets = merge_sort(targetdistances)
+    if sortedtargets[0] == RedDistance:
+        bluetank.setheading(bluetank.towards(redtarget))
+        print("Red is closest")
+    if sortedtargets[0] == GreenDistance:
+        bluetank.setheading(bluetank.towards(greentarget))
+        print("Green is closest")
+    if sortedtargets[0] == PinkDistance:
+        bluetank.setheading(bluetank.towards(pinktarget))
+        print("Pink is closest")
+    if sortedtargets[0] == OrangeDistance:
+        bluetank.setheading(bluetank.towards(orangetarget))
+        print("Orange is closest")
+
+
+def moveTargets():
+         redx = random.randint(-290,290)
+         redy = random.randint(-290,290)
+         redtarget.goto(redx,redy)
+
+         greenx = random.randint(-290,290)
+         greeny = random.randint(-290,290)
+         greentarget.goto(greenx,greeny)
+
+         pinkx = random.randint(-290,290)
+         pinky = random.randint(-290,290)
+         pinktarget.goto(pinkx,pinky)
+
+         orangex = random.randint(-290,290)
+         orangey = random.randint(-290,290)
+         orangetarget.goto(orangex,orangey)
+
 
 #Controls
 #Bluetank
-turtle.onkey(bluetank.turnblue_left, 'Left')
-turtle.onkey(bluetank.turnblue_right, 'Right')
-turtle.onkey(bluetank.bluespeed, 'Up')
-turtle.onkey(bluetank.blueslow, 'Down')
 turtle.onkey(bluetank.blueaim1, '1')
 turtle.onkey(bluetank.blueaim2, '2')
 turtle.onkey(bluetank.blueaim3, '3')
 turtle.onkey(bluetank.blueaim4, '4')
+turtle.onkey(sortdistance, '5')
+turtle.onkey(moveTargets, '6')
 turtle.listen()
 
 #Main game loop
-while True:
-    bluetank.move()
-     #Check for collisions between tanks
-    if bluetank.collide(redtank):
-        bluetank.goto(0,0)
-        redtank.goto(200,-200)
-
-    if bluetank.collide(greentank):
-       bluetank.goto(0,0)
-       greentank.goto(-200,200)
-
-    if bluetank.collide(pinktank):
-        bluetank.goto(0,0)
-        pinktank.goto(-200,-200)
-
-    if bluetank.collide(pinktank):
-        bluetank.goto(0,0)
-        orangetank.goto(200,200)
+turtle.done()
