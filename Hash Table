@@ -1,0 +1,68 @@
+#make array size 10
+#6 random SS numbers, see if any collisions
+#966-43-3010, 419-32-9760, 559-23-8259, 997-99-4588, 449-32-3452 
+#247-51-2172, 832-48-2399, 227-47-6200, 000-87-6670, 477-67-1427
+
+#create a dictionary
+class HashTable:
+        def __init__(self):
+            self.size = 10
+            self.map = [None] * self.size
+        def gethash(self,key):
+            hash = 0 
+            for char in str(key):
+                hash += ord(char)
+            return hash % self.size
+
+        def add(self,key,value):
+            keyhash = self.gethash(key)
+            keyvalue = [key, value]
+
+            if self.map[keyhash] is None:
+                self.map[keyhash] = list([keyvalue])
+                return True
+            else:
+                for pair in self.map[keyhash]:
+                    if pair[0] == key:
+                        pair[1] = value
+                        return True
+                self.map[keyhash].append(keyvalue)
+                return True
+
+        def get(self,key):
+            keyhash = self.gethash(key)
+            if self.map[keyhash] is not None:
+                for pair in self.map[keyhash]:
+                    if pair[0] == key:
+                        return pair[1]
+            return None
+
+        def delete(self,key):
+            keyhash = self.gethash(key)
+            if self.map[keyhash] is None:
+                return False
+            for i in range (0, len(self.map[keyhash])):
+                if self.map[keyhash][i][0] == key:
+                    self.map[keyhash].pop(i)
+                    return True
+                
+        def print(self):
+            print('Social Security Numbers')
+            for item in self.map:
+                if item is not None:
+                    print(str(item))
+
+
+h = HashTable()
+
+h.add('A', '966-43-3010')
+h.add('B', '419-32-9760')
+h.add('C', '559-23-8259')
+h.add('D', '997-99-4588')
+h.add('E', '449-32-3452')
+h.add('F', '247-51-2172')
+h.add('G', '832-48-2399')
+h.add('H', '227-47-6200')
+h.add('I', '000-87-6670')
+h.add('J', '477-67-1427')
+h.print()
