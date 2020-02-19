@@ -1,0 +1,58 @@
+
+
+
+class MyHash(object):
+    def __init__(self, length=10):
+        self.array = [None] * length
+
+    def hash(self,key):
+        length = len(self.array)
+        return hash(key) % length
+    
+    def add(self,key,value):
+        index = self.hash(key)
+        if self.array[index] is not None:
+            for kvp in self.array[index]:
+                if kvp[0] == key:
+                    kvp[1] = value
+                    break
+            else:
+                self.array[index] = []
+                self.array[index].append([key,value])
+                print("There was a collison with slot ", key, " and", kvp)
+        else:
+            self.array[index] = []
+            self.array[index].append([key,value])
+            print("Slot ", key, " was used")
+            
+
+    def get(self,key):
+        index = self.hash(key)
+        if self.array[index] is None:
+            raise KeyError()
+        else:
+            for kvp in self.array[index]:
+                if kvp[0] == key:
+                    return kvp[1]
+            raise KeyError()
+
+    def print(self):
+        print(" ")
+        print("Social Security Numbers")
+        for item in self.array:
+            if item is not None:
+                print(str(item))
+
+mh = MyHash()
+
+mh.add('A', '966-43-3010')
+mh.add('B', '419-32-9760')
+mh.add('C', '559-23-8259')
+mh.add('D', '997-99-4588')
+mh.add('E', '449-32-3452')
+mh.add('F', '247-51-2172')
+mh.add('G', '832-48-2399')
+mh.add('H', '227-47-6200')
+mh.add('I', '000-87-6670')
+mh.add('J', '477-67-1427')
+mh.print()
