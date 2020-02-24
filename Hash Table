@@ -1,6 +1,3 @@
-
-
-
 class MyHash(object):
     def __init__(self, length=10):
         self.array = [None] * length
