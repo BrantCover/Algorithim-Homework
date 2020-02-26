@@ -1,0 +1,36 @@
+import math
+
+n = int(input("Enter the value of N: "))
+k = int(input("Enter the value of K: "))
+
+nInput = n
+kInput = k
+
+nlist = [n]
+klist = [k]
+
+for i in range(n):
+    n = n-1
+    nlist.append(n)
+    if n == 1:
+        break
+
+
+for i in range(k):
+    k = k-1
+    klist.append(k)
+    if k == 1:
+        break
+
+
+def calcfac(myList):
+    result = 1
+    for i in myList:
+        result = result * i
+    return result
+
+nfac = (calcfac(nlist))
+kfac = (calcfac(klist))
+
+ans = nfac // (kfac*(nInput-kInput))
+print("The answer is: ", ans)
