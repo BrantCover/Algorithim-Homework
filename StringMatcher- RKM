@@ -1,0 +1,52 @@
+import time
+start = time.perf_counter()
+matches = []
+d = 256
+def stringmatcher(P,T,q):
+    m = len(P)
+    n = len(T)
+    s=0
+    j=0
+    p=0
+    t=0
+    h=1
+    
+    for x in range(1000000):
+        print(x)
+
+        for i in range(m-1):
+            h = (h*d)%q
+
+        for s in range(m):
+            p = (d*p + ord(P[s]))%q
+            t = (d*t + ord(T[s]))%q
+
+        for s in range(n-m+1):
+            if p==t:
+                for j in range(m):
+                    if T[s+j] != P[j]:
+                        break
+                j+=1
+
+                if j==m:
+                    if (x<=0):
+                        matches.append(s)
+
+            if s < n-m:
+                t = (d*(t-ord(T[s])*h) + ord(T[s+m]))%q
+
+                if t < 0:
+                    t = t+q
+ 
+def timerend():
+    stop = time.perf_counter()
+    print("Time spent was", (stop - start), "seconds")
+    print ("Patterns were found at indexes", matches)
+
+if __name__ == '__main__':
+
+    T = "ababbcbbcbbcaba"
+    P = "aba"
+    q = 101
+    stringmatcher(P,T,q)
+    timerend()
