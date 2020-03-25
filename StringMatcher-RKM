@@ -47,6 +47,6 @@ if __name__ == '__main__':
 
     T = "ababbcbbcbbcaba"
     P = "aba"
-    q = 101
+    q = 7
     stringmatcher(P,T,q)
     timerend()
