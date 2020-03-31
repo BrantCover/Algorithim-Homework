@@ -1,0 +1,92 @@
+import turtle
+import random
+import time
+
+#Base game settings
+turtle.fd(0)
+turtle.speed(0)
+turtle.bgcolor("white")
+turtle.ht()
+turtle.setundobuffer(1)
+turtle.tracer(0)
+turtle.setup(600,600)
+
+#Class to set up all sprites used in the game
+class Sprite(turtle.Turtle):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        turtle.Turtle.__init__(self, shape = spriteshape)
+        self.speed(0)
+        self.penup()
+        self.color(color)
+        self.fd(0)
+        self.goto(startx, starty)
+        self.setheading(heading)
+        self.speed = 1
+
+    def move(self):
+        self.fd(self.speed)
+
+        #Tank colliding with tank
+    def collide(self, other):
+        if (self.xcor() >= (other.xcor() - 10)) and \
+        (self.xcor() <= (other.xcor() + 10)) and \
+        (self.ycor() <= (other.ycor() + 10)) and \
+        (self.ycor() >= (other.ycor() - 10)):
+            return True
+        else:
+            return False
+
+#Tank class and controls (Turning, Controls, Bluetank, enemytank, Setup)
+#Bluetank class and setup
+class Bluetank(Sprite):
+     def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 10
+        self.lives = 3
+
+     def turnblue_left(self):
+        self.lt(30)
+
+     def turnblue_right(self):
+        self.rt(30)
+
+     def bluereset(self):
+         self.goto(200,0)
+
+#enemytank class and setup
+class Enemy(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 6
+        self.setheading(random.randint(0,360))
+
+#Create all Sprites
+#Tanks
+bluetank = Bluetank("classic", "blue" ,200, 0, 180)
+enemies = []
+for i in range(2):
+    x = random.randint(-275 ,-225)
+    y = random.randint(-275,275)
+    enemies.append(Enemy("classic", "red",x, y, 0))
+
+#Controls
+turtle.onkey(bluetank.turnblue_left, 'Left')
+turtle.onkey(bluetank.turnblue_right, 'Right')
+turtle.onkey(bluetank.bluereset, 'u')
+turtle.listen()
+
+#Main game loop
+while True:
+    turtle.update()
+    time.sleep(0.05)
+    bluetank.move()
+    
+    for enemy in enemies:
+        enemy.move()
+        enemy.setheading(enemy.towards(bluetank))
+        #Check for collisions between tank and enemy
+        if bluetank.collide(enemy):
+            x = random.randint(-275,275)
+            y = random.randint(-275,275)
+            enemy.goto(x,y)
+            bluetank.goto(200,0)
