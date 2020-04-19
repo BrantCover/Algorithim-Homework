@@ -1,0 +1,228 @@
+import turtle
+import math
+import time
+import random
+
+class tanks(turtle.Turtle):
+    def __init__(self,x,y,angle,size,v,health,color,name,active,targetx,targety):
+        turtle.Turtle.__init__(self)
+        self.speed(0)
+        self.x=x
+        self.y=y
+        self.size=size
+        self.angle=angle
+        self.v=v
+        self.health=health
+        self.color=color
+        self.name=name
+        self.active=active
+        self.targetx=targetx
+        self.targety=targety
+        self.speed = 1
+
+    def draw(self):
+        turtle.color(self.color)
+        turtle.pu()
+        turtle.goto(self.x,self.y-self.size)
+        turtle.pd()
+        turtle.setheading(0)
+        turtle.circle(self.size)
+        turtle.pu()
+        turtle.goto(self.x,self.y)
+        turtle.pd()
+        turtle.goto(self.x+math.cos(self.angle)*self.size * 1.5,self.y+math.sin(self.angle)*self.size *1.5)
+               
+    def move(self):
+        self.x+=math.cos(self.angle)* self.v
+        self.y+=math.sin(self.angle)* self.v
+        self.draw()
+
+        #Collision detection (Wall, Boundry, Boundries, Divider, Collision)
+        #Main Wall
+        if turtle.xcor() > 190:
+            turtle.setx(190)
+        if turtle.xcor() < 10:
+            turtle.setx(10)
+        if turtle.ycor() > 190:
+            turtle.sety(190)
+        if turtle.ycor() < 10:
+            turtle.sety(10)
+        #Middle Divider
+        if turtle.xcor() < 87.5 and turtle.ycor() < 87.5 and \
+            turtle.xcor() > 112.5 and turtle.ycor() > 112.5:
+            turtle.rt(60)
+        #Top Left Divider
+        if turtle.xcor() < 25 and turtle.ycor() < 150 and \
+            turtle.xcor() > 50 and turtle.ycor() > 175:
+            turtle.rt(60)
+        #Bottom Left Divider
+        if turtle.xcor() < 25 and turtle.ycor() < 50 and \
+            turtle.xcor() > 50 and turtle.ycor() > 75:
+            turtle.rt(60)
+        #Top Right Divider
+        if turtle.xcor() < 150 and turtle.ycor() < 150 and \
+            turtle.xcor() > 175 and turtle.ycor() > 175:
+            turtle.lt(60)
+        #Bottom Right Divider
+        if turtle.xcor() < 150 and turtle.ycor() < 50 and \
+            turtle.xcor() > 175 and turtle.ycor() > 75:
+            turtle.rt(60)
+
+        #Tank colliding with tank
+    def collide(self, other):
+        if (self.xcor() >= (other.xcor() - 10)) and \
+        (self.xcor() <= (other.xcor() + 10)) and \
+        (self.ycor() <= (other.ycor() + 10)) and \
+        (self.ycor() >= (other.ycor() - 10)):
+            return True
+        else:
+            return False
+
+    def target(self, x,y):
+        self.targetx=x
+        self.targety=y
+
+   
+        
+#Class for graphics (draw boarder, draw wall)
+class Boarders():
+    def __init__(self):
+        self.state = "playing"
+        self.pen = turtle.Turtle()
+        self.pen.hideturtle()
+       
+    def draw_boarder(self):
+        self.pen.speed(0)
+        self.pen.color("black")
+        self.pen.pensize(3)
+        self.pen.penup()
+        self.pen.goto(0,200)
+        self.pen.pendown()
+        #Main Wall
+        for side in range(4):
+            self.pen.fd(200)
+            self.pen.rt(90)
+        self.pen.penup()
+        self.pen.ht()
+        #Top Left Divider
+        self.pen.goto(25,150)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for TLD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Bottom Left Divider
+        self.pen.goto(25,50)
+        self.pen.pendown()
+        self.pen.fillcolor('black') 
+        self.pen.begin_fill()
+        for BLD in range(4):
+            self.pen.fd(25)
+            self.pen.rt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Top Right Divider
+        self.pen.goto(150,150)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for TRD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Bottom Right Divider
+        self.pen.goto(150,50)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for BRD in range(4):
+            self.pen.fd(25)
+            self.pen.rt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Middle Divider
+        self.pen.goto(87.5,87.5)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for BRD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+
+def kmove():
+    global velocity
+    velocity=.1
+def kstop():
+    global velocity
+    velocity =0
+def kleft():
+    global rotate
+    rotate=.01
+def kleftstop():
+    global rotate
+    rotate=0
+def kright():
+    global rotate
+    rotate=-.01
+def krightstop():
+    global rotate
+    rotate=0
+def kend():
+    global end
+    end=1
+
+def control(t):
+    t.angle+=rotate
+    t.v=velocity
+
+screen = turtle.Screen()
+screen.setup(500,500)
+screen.setworldcoordinates(0,0,200.0,200.0)
+screen.tracer(0)  
+boarders = Boarders()
+boarders.draw_boarder()
+
+screen.onkeypress(kmove, "Up")
+screen.onkeyrelease(kstop, "Up")
+screen.onkeypress(kleft, "Left")
+screen.onkeyrelease(kleftstop, "Left")
+screen.onkeypress(kright, "Right")
+screen.onkeyrelease(krightstop, "Right")
+screen.onkeypress(kend, "Escape")
+turtle.speed(0)
+turtle.hideturtle()
+velocity=0
+rotate=0
+end=0
+
+user=tanks(10,20,20,5,0,10,"blue","Tank 1",True,0,0)
+#__init__(self,x,y,angle,size,v,health,color,name,active):
+numtanks= 4
+enemy = [x for x in range(numtanks)]
+for i in range(numtanks):
+    x = random.randint(15,195)
+    y = random.randint(15,195)
+    angle = random.randint(0,360)
+    enemy[i]=tanks(x,y,angle,5,0.2,10,"red","Tank 1",True,0,0)
+
+screen.listen()
+while not end :
+    control(user)
+    turtle.clear()
+    for i in enemy:
+        i.target(user.x,user.y)
+        i.move()
+    user.move()
+    screen.update()         
+
