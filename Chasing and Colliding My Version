@@ -1,0 +1,227 @@
+import turtle
+import random
+import time
+
+#Base game settings
+turtle.fd(0)
+turtle.speed(0)
+turtle.bgcolor("white")
+turtle.ht()
+turtle.setundobuffer(1)
+turtle.tracer(0)
+turtle.setup(600,600)
+turtle.setworldcoordinates(0,0,200.0,200.0)
+turtle.tracer(0) 
+
+#Class to set up all sprites used in the game
+class Sprite(turtle.Turtle):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        turtle.Turtle.__init__(self, shape = spriteshape)
+        self.speed(0)
+        self.penup()
+        self.color(color)
+        self.fd(0)
+        self.goto(startx, starty)
+        self.setheading(heading)
+        self.speed = 1
+
+    def move(self):
+        self.fd(self.speed)
+
+        #Collision detection (Wall, Boundry, Boundries, Divider, Collision)
+        #Main Wall
+        if self.xcor() > 199:
+            self.setx(199)
+        if self.xcor() < 1:
+            self.setx(1)
+        if self.ycor() > 199:
+            self.sety(199)
+        if self.ycor() < 1:
+            self.sety(1)
+        #Middle Divider
+        if self.xcor() > 87.5 and self.ycor() > 87.5 and \
+            self.xcor() < 112.5 and self.ycor() < 112.5:
+            self.speed = 0
+            self.bk(2)
+            bluetank.speed = 2
+            enemy.speed = 1
+        #Top Left Divider
+        if self.xcor() > 25 and self.ycor() > 150 and \
+            self.xcor() < 50 and self.ycor() < 175:
+            self.speed = 0
+            self.bk(2)
+            bluetank.speed = 2
+            enemy.speed = 1
+        #Bottom Left Divider
+        if self.xcor() > 25 and self.ycor() > 25 and \
+            self.xcor() < 50 and self.ycor() < 50:
+            self.speed = 0
+            self.bk(2)
+            bluetank.speed = 2
+            enemy.speed = 1
+        #Top Right Divider
+        if self.xcor() > 150 and self.ycor() > 150 and \
+            self.xcor() < 175 and self.ycor() < 175:
+            self.speed = 0
+            self.bk(2)
+            bluetank.speed = 2
+            enemy.speed = 1
+        #Bottom Right Divider
+        if self.xcor() > 150 and self.ycor() > 25 and \
+            self.xcor() < 175 and self.ycor() < 50:
+            self.speed = 0
+            self.bk(2)
+            bluetank.speed = 2
+            enemy.speed = 1
+        #Tank colliding with tank
+    def collide(self, other):
+        if (self.xcor() >= (other.xcor() - 2)) and (self.xcor() <= (other.xcor() + 2)) and (self.ycor() <= (other.ycor() + 2)) and (self.ycor() >= (other.ycor() - 2)):
+            return True
+        else:
+            return False
+
+#Tank class and controls (Turning, Controls, Bluetank, enemytank, Setup)
+#Bluetank class and setup
+class Bluetank(Sprite):
+     def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 2
+        self.lives = 3
+
+     def turnblue_left(self):
+        self.lt(30)
+
+     def turnblue_right(self):
+        self.rt(30)
+
+     def bluereset(self):
+         self.goto(200,0)
+         self.speed = 2
+
+#enemytank class and setup
+class Enemy(Sprite):
+    def __init__(self, spriteshape, color, startx, starty, heading):
+        Sprite.__init__(self, spriteshape, color, startx, starty, heading)
+        self.speed = 1.5
+        self.setheading(random.randint(0,360))
+
+    def enemyreset(self):
+        self.speed = 1.5
+
+#Class for graphics (draw boarder, draw wall)
+class Boarders():
+    def __init__(self):
+        self.state = "playing"
+        self.pen = turtle.Turtle()
+        self.pen.hideturtle()
+       
+    def draw_boarder(self):
+        self.pen.speed(0)
+        self.pen.color("black")
+        self.pen.pensize(3)
+        self.pen.penup()
+        self.pen.goto(0,200)
+        self.pen.pendown()
+        #Main Wall
+        for side in range(4):
+            self.pen.fd(200)
+            self.pen.rt(90)
+        self.pen.penup()
+        self.pen.ht()
+        #Top Left Divider
+        self.pen.goto(25,150)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for TLD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Bottom Left Divider
+        self.pen.goto(25,50)
+        self.pen.pendown()
+        self.pen.fillcolor('black') 
+        self.pen.begin_fill()
+        for BLD in range(4):
+            self.pen.fd(25)
+            self.pen.rt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Top Right Divider
+        self.pen.goto(150,150)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for TRD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Bottom Right Divider
+        self.pen.goto(150,50)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for BRD in range(4):
+            self.pen.fd(25)
+            self.pen.rt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+        #Middle Divider
+        self.pen.goto(87.5,87.5)
+        self.pen.pendown()
+        self.pen.fillcolor('black')
+        self.pen.begin_fill()
+        for BRD in range(4):
+            self.pen.fd(25)
+            self.pen.lt(90)
+        self.pen.end_fill()
+        self.pen.penup()
+        self.pen.ht()
+
+
+def get_mouse_click_coor(x,y):
+    print(x,y)
+
+turtle.onscreenclick(get_mouse_click_coor)
+#Create all Sprites
+#Draw the Map
+boarders = Boarders()
+boarders.draw_boarder()
+
+#Tanks
+bluetank = Bluetank("classic", "blue" ,184, 16, 180)
+enemies = []
+for i in range(2):
+    x = random.randint(15, 185)
+    y = random.randint(15,185)
+    enemies.append(Enemy("classic", "red",x, y, 0))
+
+#Controls
+turtle.onkey(bluetank.turnblue_left, 'Left')
+turtle.onkey(bluetank.turnblue_right, 'Right')
+turtle.onkey(bluetank.bluereset, 'u')
+turtle.listen()
+
+#Main game loop
+while True:
+    turtle.update()
+    time.sleep(0.05)
+    bluetank.move() 
+
+    for enemy in enemies:
+        enemy.move()
+        enemy.setheading(enemy.towards(bluetank)) 
+        #Check for collisions between tank and enemy
+        if bluetank.collide(enemy):
+            bluetank.speed = 0
+            enemy.speed = 0
+        if not bluetank.collide(enemy):
+            bluetank.speed = 2
+            enemy.speed = 1.5
+       
